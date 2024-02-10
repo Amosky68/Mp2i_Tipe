@@ -17,9 +17,6 @@ class Program
     static void Main(string[] args)
     {
 
-
-        
-
         // Set context creation hints
         PrepareContext();
         // Create a window and shader program
