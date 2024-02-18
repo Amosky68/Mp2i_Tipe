@@ -4,7 +4,6 @@ using System.Security;
 using System.Text;
 using JetBrains.Annotations;
 
-#pragma warning disable 0419
 
 namespace GLFW
 {

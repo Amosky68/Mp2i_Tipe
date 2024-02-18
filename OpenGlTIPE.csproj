@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>OpenGlTIPE</RootNamespace>
     <AssemblyName>OpenGlTIPE</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GL.cs" />
+    <Compile Include="OpenGl\GL.cs" />
     <Compile Include="GLFW\CharEventArgs.cs" />
     <Compile Include="GLFW\ContentScaleEventArgs.cs" />
     <Compile Include="GLFW\Delegates.cs" />
@@ -107,6 +109,11 @@
     <Compile Include="GLFW\Vulkan.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\Display\DisplayManager.cs" />
+    <Compile Include="Rendering\shaders\Shader.cs" />
+    <Compile Include="SimLoop\SimTime.cs" />
+    <Compile Include="SimLoop\SimulationModel.cs" />
+    <Compile Include="TestSim.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
