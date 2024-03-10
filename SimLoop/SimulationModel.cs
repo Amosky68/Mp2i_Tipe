@@ -26,7 +26,7 @@ namespace OpenGlTIPE.SimLoop
         {
             Initialize();
 
-            DisplayManager.CreateWindow(InitialWindowWidth, InitialWindowHeight, InitialWindowTitle);
+            DisplayManager.CreateWindow(InitialWindowWidth, InitialWindowHeight, InitialWindowTitle, true);
             LoadContent();
 
             while (!Glfw.WindowShouldClose(DisplayManager.Window))

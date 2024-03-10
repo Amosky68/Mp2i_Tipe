@@ -20,8 +20,8 @@ namespace OpenGlTIPE.Rendering.Display
         {
             WindowSize = new Vector2(width, height);
             Glfw.Init();
-            // Opengl 3.3
-            Glfw.WindowHint(Hint.ContextVersionMajor, 3);
+            // Opengl 4.3
+            Glfw.WindowHint(Hint.ContextVersionMajor, 4);
             Glfw.WindowHint(Hint.ContextVersionMinor, 3);
             Glfw.WindowHint(Hint.OpenglProfile, Profile.Core);
 

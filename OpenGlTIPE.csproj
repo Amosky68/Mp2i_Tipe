@@ -109,8 +109,11 @@
     <Compile Include="GLFW\Vulkan.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\Camera\Camera2d.cs" />
+    <Compile Include="Rendering\Camera\GlobalCamera.cs" />
     <Compile Include="Rendering\Display\DisplayManager.cs" />
     <Compile Include="Rendering\shaders\Shader.cs" />
+    <Compile Include="Rendering\shapes\VertexShapes.cs" />
     <Compile Include="SimLoop\SimTime.cs" />
     <Compile Include="SimLoop\SimulationModel.cs" />
     <Compile Include="TestSim.cs" />
