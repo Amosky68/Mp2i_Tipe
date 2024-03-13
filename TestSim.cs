@@ -10,6 +10,9 @@ using OpenGlTIPE.Rendering.shaders;
 using OpenGlTIPE.Rendering.Camera;
 using System.Numerics;
 using System.Diagnostics;
+using OpenGlTIPE.Rendering.shapes;
+using OpenGlTIPE.SimulationData;
+using System.Drawing.Printing;
 
 namespace OpenGlTIPE.SimLoop
 {
@@ -17,11 +20,14 @@ namespace OpenGlTIPE.SimLoop
     {
 
         uint vao;
-        uint vbo;
 
         Shader shader;
 
         Camera2d camera;
+
+        List<SimObjects> objects;
+        
+
         public TestSim(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
         {
         }
@@ -61,33 +67,25 @@ namespace OpenGlTIPE.SimLoop
             shader = new Shader(vertexShader, fragmentShader);
             shader.Load();
 
+            
             vao = glGenVertexArray();
             glBindVertexArray(vao);
 
 
             // x,y,r,g,b
-            /*
-            float[] vertices =
-            {
-                -50f, 50f, 1f, 0f, 0f, // top left
-                50f, 50f, 0f, 1f, 0f,// top right
-                -50f, -50f, 0f, 0f, 1f, // bottom left
-
-                50f, 50f, 0f, 1f, 0f,// top right
-                50f, -50f, 0f, 1f, 1f, // bottom right
-                -50f, -50f, 1f, 0f, 1f, // bottom left
-            }; */
+            
+            
 
 
             float[] vertices =
             {
-                -50f, 50f, // top left
-                50f, 50f , // top right
-                -50f, -50f, // bottom left
+                -0.5f,  0.5f, // top left
+                 0.5f,  0.5f , // top right
+                -0.5f, -0.5f, // bottom left
 
-                50f, 50f, // top right
-                50f, -50f, // bottom right
-                -50f, -50f, // bottom left
+                 0.5f,  0.5f, // top right
+                 0.5f, -0.5f, // bottom right
+                -0.5f, -0.5f, // bottom left
             };
 
             float[] colors =
@@ -100,42 +98,84 @@ namespace OpenGlTIPE.SimLoop
                  1f, 0f, 1f,
             };
 
-            uint vertsId = glGenBuffer();
-            uint colsId = glGenBuffer();
 
 
-            glBindBuffer(GL_ARRAY_BUFFER, vertsId);
-            fixed (float* v = &vertices[0]) {
-                glBufferData(GL_ARRAY_BUFFER, vertices.Length * sizeof(float), v, GL_STATIC_DRAW);
-            }
-            // format of the data
-            // index of buffer : 0 | first List of 2 elements | of type float | not normalised |
-            // the next paire is 5 away | offset is 0 
-            glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(float) * 2, (void*)0);
-            glEnableVertexAttribArray(0);
+            float s = 1800f;
+            objects = SimObjects.GetRandomCubes(750, new Vector4(s,-s,+s,-s), new Vector2(25f,12f), 3.1415f).ToList();
+
+            /*
+
+            objects = new List<SimObjects>();
+            VertexShapes shape1 = new VertexShapes(
+                new Vector2(100, 100),
+                new Vector2(100, 100),
+                3.141562f/3f,
+                vertices,
+                colors,
+                false);
+
+            SimObjects object1 = new SimObjects(
+                new Vector2(100, 100),
+                new Vector2(0, 0),
+                0f,
+                3.141562f / 3f,
+                "object1",
+                shape1);
 
 
 
-            glBindBuffer(GL_ARRAY_BUFFER, colsId);
-            fixed (float* v = &colors[0])
-            {
-                glBufferData(GL_ARRAY_BUFFER, colors.Length * sizeof(float), v, GL_STATIC_DRAW);
-            }
-            // format of the data
-            // index of buffer : 0 | first List of 2 elements | of type float | not normalised |
-            // the next paire is 5 away | offset is 0 
-            glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(float) * 3, (void*)0);
-            glEnableVertexAttribArray(1);
+            VertexShapes shape2 = new VertexShapes(
+                new Vector2(300, 300),
+                new Vector2(200, 100),
+                3.141562f / 6f,
+                vertices,
+                colors,
+                false);
+
+            SimObjects object2 = new SimObjects(
+                new Vector2(300, 300),
+                new Vector2(0, 0),
+                0f,
+                3.141562f / 6f,
+                "object2",
+                shape2);
 
 
-            Vector2 focusPos = new Vector2(100, 10);//DisplayManager.WindowSize;
+            objects = new List<SimObjects>();
+            objects.Add(object1);
+            objects.Add(object2);
+            */
+
+            Vector2 focusPos = new Vector2(s, s);//DisplayManager.WindowSize;
             camera = new Camera2d(focusPos, 1f);
 
         }
 
         protected override void Update()
         {
-            //Console.WriteLine(SimTime.DeltaTime);
+            const float GravityConstant = 15000f;
+            //const float threshold = 0.01f;
+
+
+            foreach (SimObjects mainObj in objects)
+            {
+
+                Vector2 acc = Vector2.Zero;
+                foreach (SimObjects pair in objects)
+                {
+                    float dist = Vector2.Distance(mainObj.position, pair.position);
+
+                    if (dist == 0f) { continue; }
+
+                    
+                    acc += (pair.position - mainObj.position) * GravityConstant / (dist * dist * dist + 100);
+
+                }
+
+                //Debug.WriteLine(mainObj.name + " " + mainObj.position);
+                mainObj.velocity += acc * SimTime.DeltaTime;
+                mainObj.position += mainObj.velocity * SimTime.DeltaTime;
+            }
         }
         protected override void Render()
         {
@@ -143,9 +183,10 @@ namespace OpenGlTIPE.SimLoop
             glClear(GL_COLOR_BUFFER_BIT);
 
             shader.Use();
-            camera.zoom = 2.5f;
+            camera.zoom = 0.1f;
             shader.SetMatrix4x4("projection", camera.GetProjectionMatrix());
 
+            /*
             Vector2 position = new Vector2(100, 0);
             Vector2 scale = new Vector2(1,0.5f);
             float rotation = 3.1415f * (float)Math.Sin((float)SimTime.TotalElapsedSeconds * 0.2f);
@@ -175,7 +216,16 @@ namespace OpenGlTIPE.SimLoop
 
             glBindVertexArray(vao);
             glDrawArrays(GL_TRIANGLES, 0, 6);
-            glBindVertexArray(0);
+            glBindVertexArray(0);*/
+            objects[0].rotation = (float)Math.Sin((double)SimTime.TotalElapsedSeconds);
+            Debug.WriteLine("fps : " + 1 / SimTime.DeltaTime);
+
+            double t1 = Glfw.Time;
+            foreach (SimObjects shape in objects)
+            {
+                shape.draw(shader);
+            }
+            Debug.WriteLine("Image drawn in " + (Glfw.Time - t1) + " seconds (" + 1f/(Glfw.Time - t1) + " calls/secs)");
 
             Glfw.SwapBuffers(DisplayManager.Window);
         }

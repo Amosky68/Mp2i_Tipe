@@ -116,6 +116,8 @@
     <Compile Include="Rendering\shapes\VertexShapes.cs" />
     <Compile Include="SimLoop\SimTime.cs" />
     <Compile Include="SimLoop\SimulationModel.cs" />
+    <Compile Include="SimLoop\UserInput.cs" />
+    <Compile Include="SimulationData\SimObjects.cs" />
     <Compile Include="TestSim.cs" />
   </ItemGroup>
   <ItemGroup>

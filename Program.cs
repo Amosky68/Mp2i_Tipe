@@ -6,7 +6,7 @@ namespace MainProgram
     {
         public static void Main(string[] args)
         {
-            SimulationModel game = new TestSim(800, 600, "test !");
+            SimulationModel game = new TestSim(1200, 800, "test !");
             game.Run();
         }
     }
