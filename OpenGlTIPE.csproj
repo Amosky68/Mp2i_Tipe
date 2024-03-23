@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstancingTest.cs" />
     <Compile Include="OpenGl\GL.cs" />
     <Compile Include="GLFW\CharEventArgs.cs" />
     <Compile Include="GLFW\ContentScaleEventArgs.cs" />

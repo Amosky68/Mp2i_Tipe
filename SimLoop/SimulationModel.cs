@@ -15,18 +15,21 @@ namespace OpenGlTIPE.SimLoop
         protected int InitialWindowHeight { get; set; }
         protected string InitialWindowTitle { get; set; }
 
-        public SimulationModel(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle)
+        protected bool IsVsyncEnabled { get; set; }
+
+        public SimulationModel(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle, bool vSync)
         {
             InitialWindowWidth = initialWindowWidth;
             InitialWindowHeight = initialWindowHeight;
             InitialWindowTitle = initialWindowTitle;
+            IsVsyncEnabled = vSync;
         }
 
         public void Run()
         {
             Initialize();
 
-            DisplayManager.CreateWindow(InitialWindowWidth, InitialWindowHeight, InitialWindowTitle, true);
+            DisplayManager.CreateWindow(InitialWindowWidth, InitialWindowHeight, InitialWindowTitle, IsVsyncEnabled);
             LoadContent();
 
             while (!Glfw.WindowShouldClose(DisplayManager.Window))

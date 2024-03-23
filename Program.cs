@@ -1,4 +1,5 @@
-﻿using OpenGlTIPE.SimLoop;
+﻿using OpenGlTIPE;
+using OpenGlTIPE.SimLoop;
 
 namespace MainProgram
 {
@@ -6,7 +7,7 @@ namespace MainProgram
     {
         public static void Main(string[] args)
         {
-            SimulationModel game = new TestSim(1200, 800, "test !");
+            SimulationModel game = new InstancingTest(1200, 800, "Le vrai programme de la mort", false);
             game.Run();
         }
     }

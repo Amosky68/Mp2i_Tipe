@@ -73,7 +73,7 @@ namespace OpenGlTIPE.Rendering.shaders
             glUniformMatrix4fv(location, 1, false, GetMatrix4x4Values(matrix));
         }
 
-        private float[] GetMatrix4x4Values(Matrix4x4 m)
+        public static float[] GetMatrix4x4Values(Matrix4x4 m)
         {
             return new float[]
             {

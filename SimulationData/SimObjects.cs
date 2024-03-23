@@ -21,7 +21,7 @@ namespace OpenGlTIPE.SimulationData
 
         public string name;
 
-        VertexShapes shape;
+        public VertexShapes shape;
 
         public SimObjects(Vector2 position, Vector2 velocity, float anglularVelocity, float rotation, string name, VertexShapes shape)
         {
